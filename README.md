@@ -1,7 +1,7 @@
 # 🎵 YouTube to MP3 Converter (Self-Hosted)
 A premium, self-hosted application to download and convert YouTube videos to high-quality MP3/FLAC audio files. Built with **Laravel 12**, **Vue.js 3**, and **Tailwind CSS**.
 
-![Dashboard Screenshot](https://via.placeholder.com/800x400?text=Dashboard+Preview)
+
 ## 📚 Table of Contents
 - [About](#about)
 - [Important Disclaimer & Terms of Use](#disclaimer)
@@ -12,10 +12,9 @@ A premium, self-hosted application to download and convert YouTube videos to hig
 
 <a id="about"></a>
 ## ℹ️ About
-## ℹ️ About
 This project is a self-hosted YouTube audio converter built as a learning-driven passion project. It focuses on practical Laravel queue processing, media conversion workflows (`yt-dlp` + `ffmpeg`), and a modern Vue-based UI for personal experimentation.
 <a id="disclaimer"></a>
-## ⚠️ Important Disclaimer & Terms of Use
+
 ## ⚠️ Important Disclaimer & Terms of Use
 This project is a hobbyist experiment and is provided strictly for educational and demonstration purposes. Before exploring or implementing this codebase, please note the following:
 
