@@ -1,0 +1,56 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\Download;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use App\Services\DiskSpaceService;
+
+class DashboardController extends Controller
+{
+    public function __construct(
+        protected DiskSpaceService $diskSpaceService
+    ) {}
+
+    public function stats()
+    {
+        $totalDownloads = Download::completed()->count();
+        $totalStorageBytes = Download::completed()->sum('file_size'); // Assuming file_size is in bytes
+        
+        $pendingJobs = DB::table('jobs')->count();
+        $failedJobs = DB::table('failed_jobs')->count();
+        
+        // Convert storage to human readable
+        $totalStorage = $this->formatBytes($totalStorageBytes);
+        
+        // Get recent downloads
+        $recentDownloads = Download::completed()
+            ->orderBy('completed_at', 'desc')
+            ->limit(5)
+            ->get();
+
+        return response()->json([
+            'total_downloads' => $totalDownloads,
+            'total_storage' => $totalStorage,
+            'queue_pending' => $pendingJobs,
+            'jobs_failed' => $failedJobs,
+            'disk_space_free' => $this->diskSpaceService->checkAvailableSpace() . ' MB',
+            'recent_downloads' => $recentDownloads
+        ]);
+    }
+    
+    private function formatBytes($bytes, $precision = 2) { 
+        if ($bytes < 0) return '0 B';
+        
+        $units = array('B', 'KB', 'MB', 'GB', 'TB'); 
+        
+        $bytes = max($bytes, 0); 
+        $pow = floor(($bytes ? log($bytes) : 0) / log(1024)); 
+        $pow = min($pow, count($units) - 1); 
+        
+        $bytes /= pow(1024, $pow); 
+        
+        return round($bytes, $precision) . ' ' . $units[$pow]; 
+    }
+}
